@@ -63,6 +63,23 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
         return $select.placeholder;
       };
 
+      ctrl.selectAll = function() {
+        var selectItes = $select.items;
+        selectItes.forEach(function(item) {
+          $timeout(function() {
+            $select.select(item);
+          });
+        });
+      };
+
+      ctrl.clearAll = function() {
+        var selectedItems = $select.selected;
+        selectedItems.forEach(function() {
+          $timeout(function() {
+            ctrl.removeChoice(0);
+          });
+        });
+      };
 
     }],
     controllerAs: '$selectMultiple',
@@ -299,19 +316,9 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
               stashArr = stashArr.slice(1,stashArr.length);
             }
             newItem = $select.tagging.fct($select.search);
-            // verify the new tag doesn't match the value of a possible selection choice or an already selected item.
-            if (
-              stashArr.some(function (origItem) {
-                 return angular.equals(origItem, $select.tagging.fct($select.search));
-              }) ||
-              $select.selected.some(function (origItem) {
-                return angular.equals(origItem, newItem);
-              })
-            ) {
-              scope.$evalAsync(function () {
-                $select.activeIndex = 0;
-                $select.items = items;
-              });
+            newItem.isTag = true;
+            // verify the the tag doesn't match the value of an existing item
+            if ( stashArr.filter( function (origItem) { return angular.equals( origItem, $select.tagging.fct($select.search) ); } ).length > 0 ) {
               return;
             }
             newItem.isTag = true;

@@ -17,4 +17,12 @@
            ondrop="return false;">
   </div>
   <div class="ui-select-choices"></div>
+  <button ng-click="$selectMultiple.selectAll()"
+          ng-if="$select.selectAll"
+          ng-disabled="$select.disabled"
+          class="btn btn-link btn-xs">{{$select.selectAll}}</button>
+  <button ng-click="$selectMultiple.clearAll()"
+          ng-if="$select.clearAll"
+          ng-disabled="$select.disabled"
+          class="btn btn-link btn-xs">{{$select.clearAll}}</button>
 </div>
